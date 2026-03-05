@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>완주 삼례 딸기 대축제 현장 이벤트</title>
+    <!-- 프리미엄 폰트 Pretendard -->
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+    <style>
+        :root {
+            --uplus-magenta: #E6007E;
+            --strawberry-red: #FF4D6D;
+            --strawberry-light: #FFF0F4;
+            --leaf-green: #38B000;
+            --text-main: #333333;
+            --text-sub: #777777;
+            --bg-pattern: #FFE4E8;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+        }
+
+        body {
+            /* 귀여운 땡땡이 패턴 배경 */
+            background-color: var(--strawberry-light);
+            background-image: radial-gradient(var(--bg-pattern) 2.5px, transparent 2.5px);
+            background-size: 30px 30px;
+            color: var(--text-main);
+            font-family: 'Pretendard', sans-serif;
+            margin: 0;
+            line-height: 1.6;
+            word-break: keep-all;
+            overflow-x: hidden;
+        }
+
+        /* 둥둥 떠다니는 애니메이션 */
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* 통통 튀는 애니메이션 */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* 헤더 디자인 */
+        header {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.9);
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+            border-bottom: 2px dashed #ffc2d1;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.1);
+        }
+
+        header .brand-wrap {
+            font-weight: 800;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        header .brand-wrap .w-red { color: var(--strawberry-red); }
+        header .brand-wrap .w-magenta { color: var(--uplus-magenta); }
+
+        header .divider {
+            font-size: 1.2rem;
+            color: #ff99ac;
+        }
+
+        /* 히어로 섹션 */
+        .hero {
+            padding: 60px 20px 50px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero .badge {
+            background: var(--uplus-magenta);
+            color: white;
+            padding: 8px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 800;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(230, 0, 126, 0.3);
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        .hero h1 { margin: 0; line-height: 1.2; color: #000; }
+        .hero h1 .sub-collab { display: block; font-size: 1.3rem; color: var(--text-sub); margin-bottom: 10px; font-weight: 800; }
+        
+        .fest-title { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .word-row { display: flex; align-items: baseline; justify-content: center; gap: 5px; margin: -5px 0; }
+        .point-char { font-size: 4.5rem; color: var(--strawberry-red); font-weight: 900; text-shadow: 3px 3px 0px #ffd0d8; }
+        .point-char.magenta { color: var(--uplus-magenta); text-shadow: 3px 3px 0px #ffcce6; }
+        .rest-char { font-size: 2.5rem; color: #222; font-weight: 900; letter-spacing: -1px; }
+        
+        .hero .slogan { color: var(--leaf-green); margin: 25px 0 20px; font-size: 1.3rem; font-weight: 800; }
+
+        .hero-instruction {
+            background: white;
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 30px;
+            border: 3px solid var(--strawberry-red);
+            font-weight: 800;
+            color: var(--strawberry-red);
+            font-size: 1.1rem;
+            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.15);
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+
+        /* 컨테이너 */
+        .container { padding: 20px 20px 40px; max-width: 1000px; margin: 0 auto; }
+        .section-title { text-align: center; margin-bottom: 25px; }
+        .section-title h2 { font-size: 1.8rem; color: #222; font-weight: 900; margin-bottom: 5px; letter-spacing: -0.5px; }
+        .section-title p { color: var(--uplus-magenta); font-weight: 800; font-size: 1.1rem; margin: 0; }
+
+        /* 혜택 그리드 */
+        .benefit-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 50px; }
+        .card {
+            background: #fff;
+            border-radius: 35px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.08);
+            border: 3px solid #fff;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .card:active { transform: scale(0.98); border-color: #ffc2d1; }
+
+        /* 아이콘 영역 기본 (이모지용) */
+        .card-icon {
+            font-size: 3.5rem;
+            width: 100px;
+            height: 100px;
+            min-width: 100px;
+            border-radius: 25px;
+            background: #ffffff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #ffebeb;
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        /* 실제 이미지가 들어갈 때의 스타일 (기기 사진 꽉 차게) */
+        .card-icon.has-img {
+            padding: 0;
+            border: none;
+            overflow: hidden; /* 영역 밖 잘라내기 */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+        }
+        
+        .card-icon.has-img img {
+            width: 100%;
+            height: 100%;
+            border-radius: 25px;
+            object-fit: cover;
+        }
+
+        /* S26 이미지 맞춤 줌인 크롭 */
+        .img-s26 {
+            object-position: center;
+            transform: scale(1.15); /* 세로형 단말기 사진에 맞게 확대 비율 조정 */
+        }
+
+        /* 무너폰 이미지 맞춤 줌인 크롭 */
+        .img-moona {
+            object-position: center; 
+            transform: scale(1.15); /* 새 이미지 프레임에 맞춰 확대 비율 조정 */
+        }
+
+        .card-content { flex: 1; text-align: left; }
+        .card-content h3 { color: #000; margin: 0 0 5px 0; font-size: 1.3rem; font-weight: 800; }
+        .card-content .price-tag { font-size: 1.1rem; font-weight: 800; color: var(--uplus-magenta); margin-bottom: 10px; display: inline-block; background: #fff0f6; padding: 4px 12px; border-radius: 15px; }
+        
+        .card-content ul { padding: 0; list-style: none; margin: 0; }
+        .card-content ul li { margin-bottom: 4px; padding-left: 20px; position: relative; font-size: 0.95rem; color: #555; font-weight: 600; line-height: 1.3; }
+        .card-content ul li::before { content: '✔️'; position: absolute; left: 0; font-size: 0.9rem; top: -1px; }
+
+        /* 특별 프로모션 카드 스타일 (이미지 제거 후 중앙 정렬 균형 맞춤) */
+        .promo-s26 { border: 3px solid #e0c3fc; background: linear-gradient(135deg, #ffffff 0%, #f9f5ff 100%); flex-direction: column; text-align: center; padding: 45px 20px; }
+        .promo-s26 .price-tag { color: #8a2be2; background: #f3e8ff; font-size: 1.2rem; margin: 15px 0 20px; }
+        .promo-s26 .card-content { text-align: center; width: 100%; }
+        .promo-s26 ul { display: inline-block; text-align: left; margin: 0 auto; }
+
+        .promo-kids { border: 3px solid #a8e6cf; background: linear-gradient(135deg, #ffffff 0%, #f0fdf8 100%); flex-direction: column; text-align: center; padding: 45px 20px; }
+        .promo-kids .price-tag { color: #059669; background: #d1fae5; font-size: 1.2rem; margin: 15px 0 20px; }
+        .promo-kids .card-content { text-align: center; width: 100%; }
+        .promo-kids ul { display: inline-block; text-align: left; margin: 0 auto; }
+
+        /* 무너 포토존 특별 카드 */
+        .moona-card {
+            background: linear-gradient(135deg, #fff0f6 0%, #ffe0f0 100%);
+            border: 3px dashed var(--uplus-magenta);
+        }
+
+        /* 캐주얼 폼 영역 (현장 인증용) */
+        .form-section { margin-top: 40px; padding: 50px 20px 100px; background: #fff; border-radius: 50px 50px 0 0; box-shadow: 0 -10px 30px rgba(0,0,0,0.05); }
+        .form-box { max-width: 500px; margin: 0 auto; background: #fff0f4; padding: 40px 25px; border-radius: 40px; border: 4px solid #ffc2d1; }
+        .form-title { text-align:center; font-size:1.8rem; font-weight:900; margin-bottom:5px; color: var(--strawberry-red); }
+        .form-desc { text-align:center; color:#555; font-weight:700; margin-bottom:30px; font-size: 1rem; background: white; padding: 10px; border-radius: 20px; border: 2px dashed #ffb3c6; }
+        
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 800; color: #333; font-size: 1.05rem; padding-left: 5px; }
+        select { width: 100%; padding: 18px 20px; border-radius: 25px; border: 2px solid #ffb3c6; font-size: 1.1rem; background: #fff; font-weight: 700; font-family: 'Pretendard', sans-serif; color: #333; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 20px center; background-size: 15px; }
+        select:focus { outline: none; border-color: var(--uplus-magenta); box-shadow: 0 0 0 4px rgba(230, 0, 126, 0.1); }
+        
+        .submit-btn { 
+            width: 100%; padding: 22px; background: var(--uplus-magenta); color: white; border: none; 
+            border-radius: 30px; font-size: 1.4rem; font-weight: 900; cursor: pointer; 
+            box-shadow: 0 10px 20px rgba(230, 0, 126, 0.3); margin-top: 15px; transition: all 0.2s; 
+            display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .submit-btn:active { transform: scale(0.96); background: #cc006f; box-shadow: 0 5px 10px rgba(230, 0, 126, 0.3); }
+
+        /* 상태 변환 애니메이션 */
+        .success-state {
+            background: var(--leaf-green) !important;
+            box-shadow: 0 10px 20px rgba(56, 176, 0, 0.3) !important;
+            animation: bounce 0.5s;
+        }
+
+        footer { text-align: center; padding: 20px 20px 100px; color: #999; font-size: 0.9rem; background: #fff; }
+
+        @media (min-width: 768px) {
+            .card { flex-direction: column; text-align: center; }
+            .card-icon { width: 110px; height: 110px; font-size: 4.5rem; margin-bottom: 10px; }
+            .card-content { text-align: center; }
+            .card-content ul li::before { display: none; }
+            .benefit-grid { grid-template-columns: 1fr 1fr; }
+            .point-char { font-size: 5rem; }
+            .rest-char { font-size: 2.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand-wrap">
+            <span class="w-red">🍓 삼례 딸기 축제</span> 
+            <span class="divider">X</span>
+            <span class="w-magenta">LG U+ 무너</span> 
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="badge">🎪 현장 이벤트 진행 중!</div>
+        <h1>
+            <span class="sub-collab">U+ 팝업 부스에 오신 걸</span>
+            <div class="fest-title">
+                <div class="word-row"><span class="rest-char">환영해</span><span class="point-char magenta">무너!</span></div>
+            </div>
+        </h1>
+        <p class="slogan">직원에게 화면을 보여주고 선물 받으세요 🎁</p>
+
+        <div class="hero-instruction">
+            👇 스크롤 내려서 선물 고르기 👇
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- 신규 추가: 통신 혜택 특별관 -->
+        <div class="section-title" id="special-promo">
+            <p style="color: var(--strawberry-red);">FESTIVAL SPECIAL SALE</p>
+            <h2>축제 한정 특별 통신 혜택</h2>
+        </div>
+
+        <div class="benefit-grid">
+            <!-- 1. 갤럭시 S26 특가 -->
+            <div class="card promo-s26">
+                <div class="card-content">
+                    <h3 style="color:#6b21a8;">화제의 신상, 여기서 사면 대박!</h3>
+                    <div class="price-tag">갤럭시 S26 현장 최대 할인</div>
+                    <ul>
+                        <li>축제장 한정 <strong>시크릿 특별 지원금</strong> 팍팍!</li>
+                        <li>기존 폰 반납 시 추가 보상금 지급</li>
+                        <li>프리미엄 사은품 (케이스/필름/충전기 등) 증정</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 2. 무너 키즈폰 무료 -->
+            <div class="card promo-kids">
+                <div class="card-content">
+                    <h3 style="color:#047857;">대한민국 1등 AI키즈폰</h3>
+                    <div class="price-tag">무너폰2 기기값 0원</div>
+                    <ul>
+                        <li>우리 아이 키즈폰 고민 끝! <strong>전액 무료</strong></li>
+                        <li>2025 AI키즈폰 부문 <strong>대상 수상</strong></li>
+                        <li>실시간 위치 추적으로 부모님 안심 100%</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 기존: 현장 즉시 지급 혜택 (이모지 형태 유지) -->
+        <div class="section-title">
+            <p>TODAY's GIFT</p>
+            <h2>지금 당장 받을 수 있는 혜택</h2>
+        </div>
+
+        <div class="benefit-grid" style="margin-bottom: 0;">
+            <!-- 1. 로또 증정 -->
+            <div class="card moona-card">
+                <div class="card-icon" style="background: #fff5e6; border-color: #ffe0b2;">🎟️🍀</div>
+                <div class="card-content">
+                    <h3 style="color:var(--uplus-magenta);">이번 주 주인공은 나?</h3>
+                    <div class="price-tag">행운의 로또 1장 증정!</div>
+                    <ul>
+                        <li>U+ 부스 방문 시 <strong>100% 즉시 증정</strong></li>
+                        <li>달콤한 축제 즐기고 인생 역전 기회까지!</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 2. 사진 인화 -->
+            <div class="card">
+                <div class="card-icon">📸🖼️</div>
+                <div class="card-content">
+                    <h3>예쁜 추억, 폰에만 두지 마세요</h3>
+                    <div class="price-tag">고화질 사진 무료 인화</div>
+                    <ul>
+                        <li>축제에서 찍은 인생샷을 <strong>즉석에서 인화</strong></li>
+                        <li>우리 가족, 연인, 친구와의 예쁜 추억 소장</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 3. 셀카봉 대여 -->
+            <div class="card">
+                <div class="card-icon">🤳✨</div>
+                <div class="card-content">
+                    <h3>짧은 팔은 이제 안녕!</h3>
+                    <div class="price-tag">튼튼한 셀카봉 무료 대여</div>
+                    <ul>
+                        <li>축제장 어디서든 완벽한 각도로 찰칵!</li>
+                        <li><strong>간단한 확인 후</strong> 누구나 대여 가능</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 4. 보조배터리 대여 -->
+            <div class="card">
+                <div class="card-icon">🔋⚡</div>
+                <div class="card-content">
+                    <h3>사진 찍다 폰 꺼지면 낭패!</h3>
+                    <div class="price-tag">보조배터리 무료 대여 서비스</div>
+                    <ul>
+                        <li>배터리 걱정 없이 <strong>하루 종일 찰칵찰칵</strong></li>
+                        <li>넉넉한 용량으로 축제 내내 든든하게!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 현장 폼 (스태프 확인용) -->
+    <div class="form-section" id="form">
+        <div class="form-box">
+            <h2 class="form-title">🎁 선물 수령증 작성</h2>
+            <p class="form-desc">선택 후 <strong>'확인 받기'</strong>를 눌러 스태프에게 보여주세요!</p>
+
+            <form id="onsiteForm">
+                <div class="form-group">
+                    <label>현재 이용 중인 통신사는? 📱</label>
+                    <select name="통신사" required>
+                        <option value="">통신사를 골라주세요</option>
+                        <option value="LG U+">LG U+ (유플러스 고객님 환영해요!)</option>
+                        <option value="SKT">SKT</option>
+                        <option value="KT">KT</option>
+                        <option value="알뜰폰">알뜰폰 / 기타</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>어떤 혜택/상담을 원하시나요? 👀</label>
+                    <select name="선택선물" required>
+                        <option value="">원하는 항목 1가지를 고르세요</option>
+                        <!-- 통신 상담 항목 추가 -->
+                        <option value="[상담] S26 특가">🌌 [상담] 갤럭시 S26 현장 최대 할인</option>
+                        <option value="[상담] 키즈폰 무료">👶 [상담] 무너 키즈폰 무료 개통</option>
+                        <option disabled>────────────────────</option>
+                        <!-- 즉시 증정 항목 -->
+                        <option value="[현장] 로또 증정">🎟️ [즉시증정] 행운 팡팡! 로또 1장</option>
+                        <option value="[현장] 사진 인화">📸 [현장서비스] 고화질 사진 인화</option>
+                        <option value="[현장] 셀카봉 대여">🤳 [현장대여] 인생샷 필수! 셀카봉</option>
+                        <option value="[현장] 배터리 대여">🔋 [현장대여] 빵빵한 보조배터리</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    직원에게 확인 받기 🎁
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p style="font-weight: 800; color: #555; font-size: 1rem; margin-bottom: 10px;">완주 삼례 딸기 축제 U+ 현장 부스</p>
+        <p>오늘 하루도 달콤한 시간 보내세요 🍓</p>
+    </footer>
+
+    <script>
+        // 스무스 스크롤 (히어로 안내 버튼 클릭 시 폼으로)
+        document.querySelector('.hero-instruction').addEventListener('click', function() {
+            document.getElementById('form').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // 폼 제출 로직 (현장 스태프 확인용 상태 변화 + 텔레그램 전송)
+        const form = document.getElementById('onsiteForm');
+        if(form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault(); 
+                
+                const btn = document.getElementById('submitBtn');
+                const formData = new FormData(form);
+                const telecom = formData.get('통신사');
+                const item = formData.get('선택선물');
+                
+                // 1. 버튼 상태를 '수령 완료/스태프 확인' 모드로 눈에 띄게 변경 (초록색)
+                btn.innerHTML = "✅ 직원 확인 완료 (안내 진행)";
+                btn.classList.add('success-state');
+                btn.disabled = true;
+
+                // 입력 필드 비활성화 (중복 제출 방지)
+                const selects = form.querySelectorAll('select');
+                selects.forEach(select => {
+                    select.disabled = true;
+                    select.style.background = "#f0f0f0";
+                });
+                
+                // [텔레그램 봇 설정] - 실시간 현장 집계용
+                const TELEGRAM_BOT_TOKEN = "8542782104:AAFsHvPTZimTxmVj1jZW7yfReemVZKsbao0".trim();
+                const TELEGRAM_CHAT_ID = "6675909268".trim();
+                
+                // 텔레그램 포맷 (현장 직원이 실시간으로 보기 좋게)
+                const messageText = `🎪 [현장 이벤트 참여] 🎪\n- 통신사: ${telecom}\n- 선택요청: ${item}\n\n👉 현장 안내/증정이 필요합니다.`;
+                
+                const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+                
+                // 2. 백그라운드 전송
+                fetch(telegramUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: messageText })
+                }).then(async response => {
+                    if (!response.ok) console.error("전송 실패");
+                }).catch(error => console.error("오류: ", error.message));
+
+            });
+        }
+    </script>
+</body>
+</html>
