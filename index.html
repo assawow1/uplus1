@@ -14,7 +14,6 @@
             --leaf-green: #38B000;
             --text-main: #333333;
             --text-sub: #777777;
-            --bg-pattern: #FFE4E8;
             --white: #ffffff;
         }
 
@@ -25,10 +24,10 @@
         }
 
         body {
-            /* 귀여운 땡땡이 패턴 배경 */
+            /* 귀여운 딸기 이모지 패턴 배경 (SVG 활용) */
             background-color: var(--strawberry-light);
-            background-image: radial-gradient(var(--bg-pattern) 2.5px, transparent 2.5px);
-            background-size: 30px 30px;
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg opacity='0.15'%3E%3Ctext x='10' y='30' font-size='24'%3E🍓%3C/text%3E%3Ctext x='50' y='70' font-size='24'%3E🍓%3C/text%3E%3C/g%3E%3C/svg%3E");
+            background-size: 80px 80px;
             color: var(--text-main);
             font-family: 'Pretendard', sans-serif;
             margin: 0;
@@ -248,7 +247,7 @@
             animation: bounce 0.5s;
         }
 
-        footer { text-align: center; padding: 20px 20px 100px; color: #999; font-size: 0.9rem; background: #fff; }
+        footer { text-align: center; padding: 20px 20px 100px; color: #999; font-size: 0.9rem; background: transparent; }
 
         @media (min-width: 768px) {
             .card { flex-direction: column; text-align: center; }
@@ -267,7 +266,7 @@
         <div class="brand-wrap">
             <span class="w-red">🍓 삼례 딸기 축제</span> 
             <span class="divider">X</span>
-            <span class="w-magenta">LG U+ 무너</span> 
+            <span class="w-magenta">LG U+</span> 
         </div>
     </header>
 
@@ -276,7 +275,7 @@
         <h1>
             <span class="sub-collab">U+ 팝업 부스에 오신 걸</span>
             <div class="fest-title">
-                <div class="word-row"><span class="rest-char">환영해</span><span class="point-char magenta">무너!</span></div>
+                <div class="word-row"><span class="rest-char">환영해</span><span class="point-char magenta">U</span></div>
             </div>
         </h1>
         <p class="slogan">직원에게 화면을 보여주고 선물 받으세요 🎁</p>
