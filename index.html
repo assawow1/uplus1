@@ -249,7 +249,8 @@
             const giftKey = document.getElementById('giftDevice').value;
             const hasGoodStart = document.getElementById('goodStart').checked;
             
-            document.getElementById('displayDate').innerText = document.getElementById('docDate').value.replace(/-/g, '.');
+            const dateVal = document.getElementById('docDate').value.replace(/-/g, '.');
+            document.getElementById('displayDate').innerText = dateVal;
 
             const tbody = document.getElementById('priceTable');
             tbody.innerHTML = '';
@@ -332,16 +333,28 @@
         async function captureAndSave(btn) {
             const area = document.getElementById('capture-area');
             const originalHTML = btn.innerHTML;
+            
+            // 이미지 캡쳐 전 상단 헤더 날짜 명시적 업데이트
             const dateInput = document.getElementById('docDate');
+            const displayDateDiv = document.getElementById('displayDate');
+            displayDateDiv.innerText = dateInput.value.replace(/-/g, '.');
+
+            // 설정창 내 날짜 입력창(input)은 캡쳐 시 텍스트로 임시 변환 (html2canvas 호환성)
             const dateSpan = document.createElement('span');
             dateSpan.innerText = dateInput.value.replace(/-/g, '.');
-            dateSpan.className = "text-[10px] font-bold text-white bg-transparent";
+            dateSpan.className = "text-[10px] font-bold text-slate-800 bg-transparent inline-block"; // 설정창 배경색에 맞는 어두운 색 적용
             dateInput.style.display = 'none';
             dateInput.parentNode.insertBefore(dateSpan, dateInput);
             
             try {
                 btn.innerHTML = '처리 중...';
-                const canvas = await html2canvas(area, { scale: 4, useCORS: true, backgroundColor: '#ffffff' });
+                const canvas = await html2canvas(area, { 
+                    scale: 4, 
+                    useCORS: true, 
+                    backgroundColor: '#ffffff',
+                    windowWidth: area.scrollWidth,
+                    windowHeight: area.scrollHeight
+                });
                 const link = document.createElement('a');
                 link.download = `LGU_Estimate_${new Date().getTime()}.png`;
                 link.href = canvas.toDataURL('image/png', 1.0);
