@@ -25,7 +25,7 @@
                 <p class="text-[8px] opacity-90 uppercase tracking-widest leading-none mt-0.5">U+ Bundle Estimate</p>
             </div>
             <div class="text-right">
-                <div class="bg-black/15 px-2 py-0.5 rounded-md text-[10px] font-bold" id="displayDate">2026.04.01</div>
+                <div class="bg-black/15 px-2 py-0.5 rounded-md text-[10px] font-bold" id="displayDate"></div>
             </div>
         </div>
 
@@ -35,21 +35,18 @@
                 <div class="border-b border-slate-200 pb-1 mb-0.5 flex justify-between items-center">
                     <h2 class="text-[12px] font-bold text-slate-800 tracking-tight">서비스 옵션 설정</h2>
                     <select id="serviceCategory" class="bg-uplus text-white text-[10px] font-bold px-2 py-0.5 rounded outline-none border-none">
-                        <option value="home">가정용 인터넷</option>
-                        <option value="business">우리가게패키지</option>
+                        <option value="home" selected>가정용 인터넷</option>
+                        <option value="business">소호 인터넷</option>
                     </select>
                 </div>
                 
                 <div class="grid grid-cols-2 gap-2">
-                    <div>
+                    <div id="internetWrapper" class="col-span-2">
                         <label class="block text-[9px] font-bold text-slate-400 mb-0.5 uppercase">인터넷 상품</label>
                         <select id="internet" class="w-full bg-white border border-slate-200 rounded px-1.5 py-1 text-[11px] font-bold text-uplus outline-none">
                         </select>
-                    </div>
-                    <div>
-                        <label class="block text-[9px] font-bold text-slate-400 mb-0.5 uppercase">사은품 단말</label>
-                        <select id="giftDevice" class="w-full bg-white border border-slate-200 rounded px-1.5 py-1 text-[11px] font-bold outline-none">
-                        </select>
+                        <!-- 인터넷 상품 설명용 동적 가이드 박스 -->
+                        <div id="internetDesc" class="mt-1.5 text-[9.5px] leading-relaxed text-slate-600 bg-pink-50/40 border border-pink-100/50 p-2.5 rounded-md hidden"></div>
                     </div>
                 </div>
 
@@ -70,33 +67,70 @@
                     <div>
                         <label class="block text-[9px] font-bold text-slate-400 mb-0.5 uppercase">U+ 스마트홈</label>
                         <select id="smartHome" class="w-full bg-white border border-slate-200 rounded px-1.5 py-1 text-[11px] font-bold outline-none">
-                            <option value="none">미선택</option>
+                            <option value="none" selected>미선택</option>
                             <option value="family">우리집지킴이 Family (11,000원)</option>
                             <option value="kids">우리집돌봄이 Kids (12,100원)</option>
+                            <option value="doorcam">우리집지킴이 도어캠 (14,300원)</option>
                         </select>
                     </div>
-                    <div class="flex flex-col gap-1 justify-center">
-                        <label class="flex items-center gap-1.5 text-[9px] font-bold text-slate-600"><input type="checkbox" id="addCctv" class="w-3.5 h-3.5 accent-uplus"> 지능형 CCTV</label>
-                        <label class="flex items-center gap-1.5 text-[9px] font-bold text-slate-600"><input type="checkbox" id="addPhone" class="w-3.5 h-3.5 accent-uplus"> AI 전화</label>
+                    <div>
+                        <!-- 입력 방식 대신 0대~5대까지 고를 수 있는 드롭다운 셀렉트 박스 -->
+                        <label class="block text-[9px] font-bold text-slate-400 mb-0.5 uppercase">지능형 CCTV 수량</label>
+                        <select id="cctvQty" class="w-full bg-white border border-slate-200 rounded px-1.5 py-1 text-[11px] font-bold outline-none focus:ring-1 focus:ring-uplus">
+                            <option value="0" selected>미선택</option>
+                            <option value="1">1대</option>
+                            <option value="2">2대</option>
+                            <option value="3">3대</option>
+                            <option value="4">4대</option>
+                            <option value="5">5대</option>
+                        </select>
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between border-t border-slate-200 pt-1">
-                    <label class="flex items-center gap-1.5 text-[10px] font-bold text-uplus cursor-pointer">
-                        <input type="checkbox" id="goodStart" checked class="w-3.5 h-3.5 accent-uplus"> Good Start (+5만)
-                    </label>
-                    <input type="date" id="docDate" class="bg-white border border-slate-200 rounded px-1.5 py-1 text-[10px] w-[120px]" value="2026-04-01">
+                <!-- ✅ 새로 추가된 모바일/가족 결합 할인 옵션 (스마트홈 하단 배치) -->
+                <div>
+                    <label class="block text-[9px] font-bold text-slate-400 mb-0.5 uppercase">모바일/가족 결합 할인</label>
+                    <select id="familyCombination" class="w-full bg-white border border-slate-200 rounded px-1.5 py-1 text-[11px] font-bold outline-none border-pink-200 focus:ring-1 focus:ring-uplus">
+                        <option value="none" selected>결합 할인 미선택</option>
+                        <option value="together">U+투게더 결합 할인 (-11,000원)</option>
+                        <option value="easy99">참쉬운 가족결합 (-9,900원)</option>
+                        <option value="easy132">참쉬운 가족결합 (-13,200원)</option>
+                    </select>
+                </div>
+
+                <!-- 영업 활성화 프로모션 래퍼 (가정용 시 JS로 완벽히 hidden 제어) -->
+                <div id="promoSection" class="flex flex-col gap-1.5 border-t border-slate-200 pt-2">
+                    <div class="text-[9.5px] font-bold text-uplus tracking-tight flex items-center gap-1">
+                        <span class="w-1 h-2 bg-uplus rounded-full inline-block"></span>
+                        [영업 활성화 프로모션]
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <label class="flex items-center gap-1.5 text-[9px] font-bold text-slate-700 cursor-pointer">
+                            <input type="checkbox" id="policyGeneral" class="w-3.5 h-3.5 accent-uplus"> 결제안심무선 (+5만)
+                        </label>
+                        <label class="flex items-center gap-1.5 text-[9px] font-bold text-slate-700 cursor-pointer">
+                            <input type="checkbox" id="policyAnsim" class="w-3.5 h-3.5 accent-uplus"> 안심보상신규 (+8만)
+                        </label>
+                    </div>
+                    <div class="flex items-center justify-between mt-1">
+                        <label class="flex items-center gap-1.5 text-[10px] font-bold text-uplus cursor-pointer">
+                            <input type="checkbox" id="goodStart" class="w-3.5 h-3.5 accent-uplus"> Good Start (+5만)
+                        </label>
+                        <label class="flex items-center gap-1.5 text-[10px] font-bold text-slate-600 cursor-pointer">
+                            <input type="checkbox" id="addPhone" class="w-3.5 h-3.5 accent-uplus"> AI 전화
+                        </label>
+                    </div>
                 </div>
             </div>
 
             <div class="mb-1.5 px-1 flex justify-between items-end">
                 <h3 class="text-[13px] font-bold text-slate-800">■ 월 청구 예상 요금</h3>
-                <span class="text-[8px] text-slate-400">결합 할인 자동 계산 / VAT 별도</span>
+                <span class="text-[8px] text-slate-400">결합 할인 자동 계산 / 부가세(VAT) 포함</span>
             </div>
             <div class="border-y border-slate-300 mb-3 w-full overflow-hidden text-slate-700">
                 <table class="w-full text-left border-collapse text-[10px]">
                     <thead class="bg-slate-50 border-b border-slate-300 font-bold text-slate-600 uppercase">
-                        <tr><th class="px-2 py-1.5 border-r border-slate-200">상품명</th><th class="px-1 py-1.5 text-center border-r border-slate-200">수량</th><th class="px-2 py-1.5 text-right">금액</th></tr>
+                        <tr><th class="px-2 py-1.5 border-r border-slate-200">상품명 (부가세포함)</th><th class="px-1 py-1.5 text-center border-r border-slate-200">수량</th><th class="px-2 py-1.5 text-right">금액</th></tr>
                     </thead>
                     <tbody id="priceTable" class="divide-y divide-slate-200"></tbody>
                 </table>
@@ -121,16 +155,16 @@
                 <div class="bg-slate-800 p-4 rounded-xl text-white shadow-xl relative overflow-hidden">
                     <div class="absolute -right-4 -top-4 w-16 h-16 bg-uplus/20 rounded-full"></div>
                     <div class="flex justify-between items-center text-[11px] mb-1">
-                        <span class="text-slate-400">월 이용료 (공급가액)</span>
-                        <span id="subtotal" class="font-bold">0</span>
+                        <span class="text-slate-400">공급 가액 (부가세 제외)</span>
+                        <span id="subtotal" class="font-bold text-slate-300">0</span>
                     </div>
                     <div class="flex justify-between items-center text-[11px] border-b border-white/10 pb-2 mb-2">
                         <span class="text-slate-400">부가가치세 (10%)</span>
-                        <span id="vatTotal" class="font-bold">0</span>
+                        <span id="vatTotal" class="font-bold text-slate-300">0</span>
                     </div>
                     <div class="flex justify-between items-end">
-                        <span class="text-[13px] font-black text-pink-200 uppercase">Total Monthly</span>
-                        <div class="text-right leading-none"><span id="total" class="text-3xl font-black text-white tracking-tighter">0</span><span class="text-[12px] font-bold text-pink-400 ml-0.5 uppercase">won</span></div>
+                        <span class="text-[13.5px] font-black text-pink-200 uppercase tracking-tight">최종 청구 금액 (VAT 포함)</span>
+                        <div class="text-right leading-none"><span id="total" class="text-3xl font-black text-white tracking-tighter">0</span><span class="text-[12px] font-bold text-pink-400 ml-0.5 uppercase">원</span></div>
                     </div>
                 </div>
             </div>
@@ -153,67 +187,215 @@
 
         const uplusData = {
             home: {
-                "2.5G": { name: "안심 보상 2.5G", single: toExVAT(50600), combined: toExVAT(45100), voucher: { wifi: 450000, speaker: 430000 } },
-                "1G": { name: "안심 보상 1G", single: toExVAT(45100), combined: toExVAT(39600), voucher: { wifi: 450000, speaker: 430000 } },
-                "500M": { name: "안심 보상 500M", single: toExVAT(39600), combined: toExVAT(34100), voucher: { wifi: 400000, speaker: 380000 } },
-                "100M": { name: "안심 보상 100M", single: toExVAT(27500), combined: toExVAT(27500), voucher: { ansim_bo: 300000, ansim: 280000 } }
+                "2.5G": { 
+                    name: "프리미엄 안심 보상 2.5G", 
+                    single: 50600, 
+                    combined: 45100, 
+                    voucher: 450000,
+                    desc: `
+                        <div class="space-y-1 text-slate-700">
+                            <div>• 기가와이파이7 + 기가와이파이6/스마트홈스피커 중 1대 선택</div>
+                            <div>• 유해/스미싱 의심 사이트 차단 + 기기 최대 3대 접속</div>
+                            <div class="mt-2 border-t border-pink-100 pt-1.5">
+                                <span class="text-uplus font-bold">🎁 안심 보상 혜택:</span>
+                                <ul class="list-disc list-inside mt-1 space-y-1 text-slate-600 pl-1">
+                                    <li><strong>금융 피해 보상 케어</strong>: 인터넷 이용 중 피싱/해킹 등 금융 사기로 금전적 손해가 발생하는 경우 보상 (세대당 총 300만원, 1년 1회 보상, 매년 한도 복원)</li>
+                                    <li><strong>PC/TV 수리 보상 케어</strong>: 인터넷 이용 중 PC, 노트북, TV 기기 고장으로 유상 수리하는 경우 보상 (최대 50만원, 자기부담금 10만원, 1년 1회 보상, 매년 한도 복원)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `
+                },
+                "1G": { 
+                    name: "프리미엄 안심 보상 1G", 
+                    single: 45100, 
+                    combined: 39600, 
+                    voucher: 450000,
+                    desc: `
+                        <div class="space-y-1 text-slate-700">
+                            <div>• 기가와이파이6/7 중 1대 선택 + 기가와이파이6 선택 시 추가 와이파이/스마트홈스피커 중 1대 선택</div>
+                            <div>• 유해/스미싱 의심 사이트 차단 + 기기 최대 3대 접속</div>
+                            <div class="mt-2 border-t border-pink-100 pt-1.5">
+                                <span class="text-uplus font-bold">🎁 안심 보상 혜택:</span>
+                                <ul class="list-disc list-inside mt-1 space-y-1 text-slate-600 pl-1">
+                                    <li><strong>금융 피해 보상 케어</strong>: 인터넷 이용 중 피싱/해킹 등 금융 사기로 금전적 손해가 발생하는 경우 보상 (세대당 총 300만원, 1년 1회 보상, 매년 한도 복원)</li>
+                                    <li><strong>PC/TV 수리 보상 케어</strong>: 인터넷 이용 중 PC, 노트북, TV 기기 고장으로 유상 수리하는 경우 보상 (최대 50만원, 자기부담금 10만원, 1년 1회 보상, 매년 한도 복원)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `
+                },
+                "500M": { 
+                    name: "프리미엄 안심 보상 500M", 
+                    single: 39600, 
+                    combined: 34100, 
+                    voucher: 400000,
+                    desc: `
+                        <div class="space-y-1 text-slate-700">
+                            <div>• 기가와이파이6/7 중 1대 선택 + 기가와이파이6 선택 시 추가 와이파이/스마트홈스피커 중 1대 선택</div>
+                            <div>• 유해/스미싱 의심 사이트 차단</div>
+                            <div class="mt-2 border-t border-pink-100 pt-1.5">
+                                <span class="text-uplus font-bold">🎁 안심 보상 혜택:</span>
+                                <ul class="list-disc list-inside mt-1 space-y-1 text-slate-600 pl-1">
+                                    <li><strong>금융 피해 보상 케어</strong>: 인터넷 이용 중 피싱/해킹 등 금융 사기로 금전적 손해가 발생하는 경우 보상 (세대당 총 300만원, 1년 1회 보상, 매년 한도 복원)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `
+                },
+                "100M": { 
+                    name: "프리미엄 안심 보상 100M", 
+                    single: 27500, 
+                    combined: 27500, 
+                    voucher: 300000,
+                    desc: `
+                        <div class="space-y-1 text-slate-700">
+                            <div>• 기가와이파이 1대 제공</div>
+                            <div>• 유해/스미싱 의심 사이트 차단</div>
+                            <div class="mt-2 text-[8.5px] text-slate-400">※ 100M 요금제는 금융 및 기기 수리 안심 보상 케어 미지원 모델입니다.</div>
+                        </div>
+                    `
+                }
             },
             business: {
-                "기가안심(1G)": { name: "기가안심 1G", single: toExVAT(38500), combined_ai: toExVAT(35200), combined_tv_cctv: toExVAT(33000), voucher: 450000 },
-                "기가슬림안심(500M)": { name: "기가슬림안심 500M", single: toExVAT(33000), combined_ai: toExVAT(29700), combined_tv_cctv: toExVAT(27500), voucher: 400000 },
-                "광랜안심(100M)": { name: "광랜안심 100M", single: toExVAT(22000), combined_ai: toExVAT(22000), combined_tv_cctv: toExVAT(22000), voucher: 150000 },
-                "기가안심보상(1G)": { name: "기가안심보상 1G", single: toExVAT(42900), combined_ai: toExVAT(39600), combined_tv_cctv: toExVAT(37400), voucher: 450000 },
-                "기가슬림안심보상(500M)": { name: "기가슬림안심보상 500M", single: toExVAT(36300), combined_ai: toExVAT(33000), combined_tv_cctv: toExVAT(30800), voucher: 400000 },
-                "광랜안심보상(100M)": { name: "광랜안심보상 100M", single: toExVAT(25300), combined_ai: toExVAT(25300), combined_tv_cctv: toExVAT(25300), voucher: 150000 }
+                "와이파이기본_기가결제안심(1G)": { 
+                    name: "와이파이기본_기가결제안심 1G", 
+                    single: 36300, 
+                    voucher: 300000,
+                    desc: `
+                        <div class="space-y-1 text-slate-700">
+                            <div>• 기가급 초고속 무선 전송 + 카드단말기 결제 장애 끊김 방지(결제안심) 서비스 탑재</div>
+                            <div class="mt-2 text-[8.5px] text-slate-400">※ 안심보상 요금제가 아니므로 금융/수리 안심 보상 케어는 미지원됩니다.</div>
+                        </div>
+                    `
+                },
+                "와이파이기본_기가슬림결제안심(500M)": { 
+                    name: "와이파이기본_기가슬림결제안심 500M", 
+                    single: 30800, 
+                    voucher: 250000,
+                    desc: `
+                        <div class="space-y-1 text-slate-700">
+                            <div>• 다수의 매장 무선 기기 사용과 결제 단말 신뢰도를 실용적으로 만족시키는 소상공인 최선호 모델</div>
+                            <div class="mt-2 text-[8.5px] text-slate-400">※ 안심보상 요금제가 아니므로 금융/수리 안심 보상 케어는 미지원됩니다.</div>
+                        </div>
+                    `
+                },
+                "와이파이기본_광랜안심(100M)": { 
+                    name: "와이파이기본_광랜안심", 
+                    single: 22000, 
+                    voucher: 150000,
+                    desc: `
+                        <div class="space-y-1 text-slate-700">
+                            <div>• 단순 결제 단말기 연동 위주 및 1인 점포, 배달 전문점에 최적화된 저렴하고 탄탄한 기본형 상품</div>
+                            <div class="mt-2 text-[8.5px] text-slate-400">※ 안심보상 요금제가 아니므로 금융/수리 안심 보상 케어는 미지원됩니다.</div>
+                        </div>
+                    `
+                },
+                "기가안심보상(1G)": { 
+                    name: "(소호)안심보상 1G", 
+                    single: 42900, 
+                    voucher: 300000,
+                    desc: `
+                        <div class="space-y-1 text-slate-700">
+                            <div>• 기가급 초고속 유선망 제공 및 와이파이 기본 제공</div>
+                            <div class="mt-2 border-t border-pink-100 pt-1.5">
+                                <span class="text-uplus font-bold">🎁 안심 보상 혜택:</span>
+                                <ul class="list-disc list-inside mt-1 space-y-1 text-slate-600 pl-1">
+                                    <li><strong>금융 피해 보상 케어</strong>: 인터넷 이용 중 피싱/해킹 등 금융 사기로 금전적 손해가 발생하는 경우 보상 (세대당 총 300만원, 1년 1회 보상, 매년 한도 복원)</li>
+                                    <li><strong>PC/TV 수리 보상 케어</strong>: 인터넷 이용 중 PC, 노트북, TV 기기 고장으로 유상 수리하는 경우 보상 (최대 50만원, 자기부담금 10만원, 1년 1회 보상, 매년 한도 복원)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `
+                },
+                "기가슬림안심보상(500M)": { 
+                    name: "(소호)안심보상 500M", 
+                    single: 36300, 
+                    voucher: 250000,
+                    desc: `
+                        <div class="space-y-1 text-slate-700">
+                            <div>• 500M 고해상도 무선 환경 및 와이파이 기본 제공</div>
+                            <div class="mt-2 border-t border-pink-100 pt-1.5">
+                                <span class="text-uplus font-bold">🎁 안심 보상 혜택:</span>
+                                <ul class="list-disc list-inside mt-1 space-y-1 text-slate-600 pl-1">
+                                    <li><strong>금융 피해 보상 케어</strong>: 인터넷 이용 중 피싱/해킹 등 금융 사기로 금전적 손해가 발생하는 경우 보상 (세대당 총 300만원, 1년 1회 보상, 매년 한도 복원)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `
+                },
+                "광랜안심보상(100M)": { 
+                    name: "(소호)안심보상 100M", 
+                    single: 25300, 
+                    voucher: 150000,
+                    desc: `
+                        <div class="space-y-1 text-slate-700">
+                            <div>• 100M 기본 광랜 속도 제공 및 와이파이 기본 제공</div>
+                            <div class="mt-2 text-[8.5px] text-slate-400">※ 100M 요금제는 금융 및 기기 수리 안심 보상 케어 미지원 모델입니다.</div>
+                        </div>
+                    `
+                }
             },
             tv: {
-                "실속형": { main: toExVAT(13200), discount: 7700 },
-                "기본형": { main: toExVAT(14300), discount: 7700 },
-                "프리미엄": { main: toExVAT(18700), discount: 7700 },
-                "프리미엄 VOD": { main: toExVAT(24200), discount: 11000 },
-                "프리미엄 내맘대로": { main: toExVAT(29700), discount: 7700 },
-                "프리미엄 유플레이": { main: toExVAT(24200), discount: 7700 },
-                "넷플릭스 HD": { main: toExVAT(27800), discount: 9900 },
-                "넷플릭스 UHD": { main: toExVAT(35700), discount: 9900 }
+                home: {
+                    "실속형": { main: 13200, discount: 5500 },
+                    "기본형": { main: 14300, discount: 5500 },
+                    "고급형": { main: 15400, discount: 5500 },
+                    "프리미엄": { main: 16500, discount: 5500 },
+                    "프리미엄플러스": { main: 17600, discount: 5500 },
+                    "프리미엄VOD": { main: 18700, discount: 11000 },
+                    "프리미엄환승구독2": { main: 27500, discount: 5500 }
+                },
+                business: {
+                    "실속형": { main: 13200, discount: 0 },
+                    "기본형": { main: 14300, discount: 0 },
+                    "고급형": { main: 15400, discount: 0 },
+                    "프리미엄": { main: 16500, discount: 0 }
+                }
             },
             smarthome: {
-                "family": { price: toExVAT(11000), discount: 2200 },
-                "kids": { price: toExVAT(12100), discount: 2200 }
+                "family": { price: 11000, discount: 2200 },
+                "kids": { price: 12100, discount: 2200 },
+                "doorcam": { price: 14300, discount: 2200 }
             },
-            extra: { cctv: toExVAT(11000), ai_phone: toExVAT(3300) }
+            extra: { cctv: 13200, ai_phone: 3300 }
         };
 
-        function updateGiftOptions() {
-            const cat = document.getElementById('serviceCategory').value;
-            const speed = document.getElementById('internet').value;
-            const giftSelect = document.getElementById('giftDevice');
-            giftSelect.innerHTML = '';
-            if (cat === 'home') {
-                giftSelect.style.display = 'block';
-                if (speed === '100M') {
-                    giftSelect.innerHTML = '<option value="ansim_bo">안심보상 선택</option><option value="ansim">안심 선택</option>';
-                } else {
-                    giftSelect.innerHTML = '<option value="wifi">기가 Wi-Fi 6</option><option value="speaker">스마트홈스피커</option>';
-                }
-            } else {
-                giftSelect.style.display = 'none';
-            }
+        // ✅ 결합 할인 단가 정의 (부가세 포함 금액)
+        const familyComboPrices = {
+            "none": 0,
+            "together": 11000,
+            "easy99": 9900,
+            "easy132": 13200
+        };
+
+        function getTodayDateString() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            return `${yyyy}.${mm}.${dd}`;
         }
 
-        function initSelects() {
+        function updateTvList() {
+            const cat = document.getElementById('serviceCategory').value;
             const tvSelect = document.getElementById('tvPlan');
             const subTvSelect = document.getElementById('subTvPlan');
+
+            const prevTv = tvSelect.value;
+            const prevSubTv = subTvSelect.value;
+
             tvSelect.innerHTML = '<option value="none">TV 미선택 (단독 요금 적용)</option>';
             subTvSelect.innerHTML = '<option value="none">부셋탑 미선택</option>';
 
-            Object.keys(uplusData.tv).forEach(key => {
-                const mainFullPrice = Math.round(uplusData.tv[key].main * 1.1);
+            const tvData = uplusData.tv[cat];
+            Object.keys(tvData).forEach(key => {
+                const mainFullPrice = tvData[key].main;
                 const subFullPrice = Math.round(mainFullPrice * 0.5);
-                
+
                 const optMain = document.createElement('option');
                 optMain.value = key;
                 optMain.innerText = `${key} (${mainFullPrice.toLocaleString()}원)`;
-                if (key === '프리미엄') optMain.selected = true;
                 tvSelect.appendChild(optMain);
 
                 const optSub = document.createElement('option');
@@ -221,7 +403,22 @@
                 optSub.innerText = `${key} (부: ${subFullPrice.toLocaleString()}원)`;
                 subTvSelect.appendChild(optSub);
             });
-            updateInternetList();
+
+            if (tvData[prevTv]) {
+                tvSelect.value = prevTv;
+            } else {
+                tvSelect.value = "none";
+            }
+
+            if (tvData[prevSubTv]) {
+                subTvSelect.value = prevSubTv;
+            } else {
+                subTvSelect.value = "none";
+            }
+        }
+
+        function initSelects() {
+            updateTvList();
         }
 
         function updateInternetList() {
@@ -232,10 +429,9 @@
                 const opt = document.createElement('option');
                 opt.value = key;
                 opt.innerText = uplusData[cat][key].name;
-                if (key === '500M' || key === '기가슬림안심보상(500M)') opt.selected = true;
+                if (key === '500M' || key === '와이파이기본_기가슬림결제안심(500M)' || key === '기가슬림안심보상(500M)') opt.selected = true;
                 intSelect.appendChild(opt);
             });
-            updateGiftOptions();
         }
 
         function update() {
@@ -244,88 +440,247 @@
             const tvKey = document.getElementById('tvPlan').value;
             const subTvKey = document.getElementById('subTvPlan').value;
             const smartHomeKey = document.getElementById('smartHome').value;
-            const hasCctv = document.getElementById('addCctv').checked;
             const hasPhone = document.getElementById('addPhone').checked;
-            const giftKey = document.getElementById('giftDevice').value;
             const hasGoodStart = document.getElementById('goodStart').checked;
             
-            const dateVal = document.getElementById('docDate').value.replace(/-/g, '.');
-            document.getElementById('displayDate').innerText = dateVal;
+            const hasPolicyGeneral = document.getElementById('policyGeneral').checked;
+            const hasPolicyAnsim = document.getElementById('policyAnsim').checked;
+
+            const cctvQty = parseInt(document.getElementById('cctvQty').value) || 0;
+            
+            // ✅ 결합 할인 선택값 가져오기
+            const familyComboKey = document.getElementById('familyCombination').value;
+            const familyComboDiscount = familyComboPrices[familyComboKey] || 0;
+
+            document.getElementById('displayDate').innerText = getTodayDateString();
 
             const tbody = document.getElementById('priceTable');
             tbody.innerHTML = '';
-            let subtotal = 0;
+            
+            let runningTotal = 0; 
             let totalDiscount = 0;
 
             const internetInfo = uplusData[cat][intKey];
             if (!internetInfo) return;
 
+            // 실시간 동적 인터넷 상품 설명 보드 렌더링 제어
+            const descEl = document.getElementById('internetDesc');
+            if (internetInfo && internetInfo.desc) {
+                descEl.innerHTML = `<span class="text-uplus font-bold">💡 상품 구성 및 혜택 가이드:</span><div class="mt-1">${internetInfo.desc}</div>`;
+                descEl.classList.remove('hidden');
+            } else {
+                descEl.classList.add('hidden');
+            }
+
+            // 가정용 인터넷 선택 시 영업 활성화 프로모션 영역 감추기 & 비즈니스 체크 초기화
+            const promoSection = document.getElementById('promoSection');
+            if (cat === 'home') {
+                promoSection.classList.add('hidden');
+                document.getElementById('policyGeneral').checked = false;
+                document.getElementById('policyAnsim').checked = false;
+                document.getElementById('goodStart').checked = false;
+                document.getElementById('addPhone').checked = false;
+            } else {
+                promoSection.classList.remove('hidden');
+            }
+
             const isTvSelected = tvKey !== 'none';
             let intPrice = internetInfo.single;
             let intDesc = "인터넷 단독 요금";
 
-            if (isTvSelected || subTvKey !== 'none' || hasCctv) {
-                intPrice = internetInfo.combined || internetInfo.combined_tv_cctv || internetInfo.single;
+            if (isTvSelected || subTvKey !== 'none' || cctvQty > 0) {
+                intPrice = internetInfo.combined || internetInfo.single;
                 intDesc = "결합 할인 자동 적용";
             }
-            subtotal += intPrice;
+            
+            runningTotal += intPrice;
             tbody.innerHTML += `<tr><td class="px-2 py-2 border-r border-slate-200 font-bold">${internetInfo.name}<br><span class="text-[8px] font-normal text-slate-500">${intDesc}</span></td><td class="text-center border-r border-slate-200">1</td><td class="text-right px-2 font-bold">${intPrice.toLocaleString()}</td></tr>`;
 
+            // TV 이용료 추가 (테이블 행만 추가하고, 할인 금액 누적은 단일화 블록에서 일괄 연산)
             if (isTvSelected) {
-                const tvUnit = uplusData.tv[tvKey];
-                subtotal += tvUnit.main;
+                const tvUnit = uplusData.tv[cat][tvKey];
+                runningTotal += tvUnit.main;
                 tbody.innerHTML += `<tr><td class="px-2 py-2 border-r border-slate-200 font-bold">U+tv ${tvKey} (메인)</td><td class="text-center border-r border-slate-200">1</td><td class="text-right px-2 font-bold">${tvUnit.main.toLocaleString()}</td></tr>`;
-                totalDiscount += toExVAT(tvUnit.discount);
             }
 
             if (subTvKey !== 'none') {
-                const subTvUnit = uplusData.tv[subTvKey];
-                const subPriceExVAT = Math.round(subTvUnit.main * 0.5);
-                subtotal += subPriceExVAT;
-                tbody.innerHTML += `<tr><td class="px-2 py-2 border-r border-slate-200 font-bold">U+tv ${subTvKey} (부)</td><td class="text-center border-r border-slate-200">1</td><td class="text-right px-2 font-bold">${subPriceExVAT.toLocaleString()}</td></tr>`;
+                const subTvUnit = uplusData.tv[cat][subTvKey];
+                const subPrice = Math.round(subTvUnit.main * 0.5); 
+                runningTotal += subPrice;
+                tbody.innerHTML += `<tr><td class="px-2 py-2 border-r border-slate-200 font-bold">U+tv ${subTvKey} (부)</td><td class="text-center border-r border-slate-200">1</td><td class="text-right px-2 font-bold">${subPrice.toLocaleString()}</td></tr>`;
             }
 
             if (smartHomeKey !== 'none') {
                 const shData = uplusData.smarthome[smartHomeKey];
-                subtotal += shData.price;
+                runningTotal += shData.price;
                 tbody.innerHTML += `<tr><td class="px-2 py-2 border-r border-slate-200 font-bold">U+ 스마트홈</td><td class="text-center border-r border-slate-200">1</td><td class="text-right px-2 font-bold">${shData.price.toLocaleString()}</td></tr>`;
-                if (isTvSelected) totalDiscount += toExVAT(shData.discount);
+                if (isTvSelected) {
+                    totalDiscount += shData.discount;
+                    tbody.innerHTML += `<tr><td class="px-2 py-2 border-r border-slate-200 font-bold text-blue-600">스마트홈 결합할인<br><span class="text-[8px] font-normal text-blue-400">홈 결합 특별 프로모션</span></td><td class="text-center border-r border-slate-200">-</td><td class="text-right px-2 font-bold text-blue-600">-${shData.discount.toLocaleString()}</td></tr>`;
+                }
             }
 
-            if (hasCctv) { subtotal += uplusData.extra.cctv; tbody.innerHTML += `<tr><td class="px-2 py-2 border-r border-slate-200 font-bold">지능형 CCTV</td><td class="text-center border-r border-slate-200">1</td><td class="text-right px-2 font-bold">${uplusData.extra.cctv.toLocaleString()}</td></tr>`; }
-            if (hasPhone) { subtotal += uplusData.extra.ai_phone; tbody.innerHTML += `<tr><td class="px-2 py-2 border-r border-slate-200 font-bold">AI 전화</td><td class="text-center border-r border-slate-200">1</td><td class="text-right px-2 font-bold">${uplusData.extra.ai_phone.toLocaleString()}</td></tr>`; }
-
-            if (totalDiscount > 0) {
-                tbody.innerHTML += `<tr><td class="px-2 py-2 border-r border-slate-200 font-bold text-blue-600">결합 프로모션 할인</td><td class="text-center border-r border-slate-200">-</td><td class="text-right px-2 font-bold text-blue-600">-${totalDiscount.toLocaleString()}</td></tr>`;
+            // CCTV 이용료 추가
+            if (cctvQty > 0) {
+                const cctvTotal = uplusData.extra.cctv * cctvQty;
+                runningTotal += cctvTotal;
+                tbody.innerHTML += `<tr><td class="px-2 py-2 border-r border-slate-200 font-bold">지능형 CCTV<br><span class="text-[8px] font-normal text-slate-500">대당 ${uplusData.extra.cctv.toLocaleString()}원</span></td><td class="text-center border-r border-slate-200">${cctvQty}</td><td class="text-right px-2 font-bold">${cctvTotal.toLocaleString()}</td></tr>`;
             }
 
-            const finalSubtotal = subtotal - totalDiscount;
-            const vat = Math.floor(finalSubtotal * 0.1);
-            document.getElementById('subtotal').innerText = finalSubtotal.toLocaleString() + ' 원';
+            // TV결합할인 및 CCTV 결합할인 중복 적용 방지 처리 블록 (단일 결합 할인으로 통합)
+            let tvCctvDiscount = 0;
+            let tvCctvDiscountLabel = "";
+
+            if (cat === 'home') {
+                if (isTvSelected && cctvQty > 0) {
+                    // 메인 TV와 CCTV를 둘 다 사용해도 결합할인은 중복 적용 없이 1회만 (TV 요금제 기준 할인 금액 적용)
+                    const tvUnit = uplusData.tv[cat][tvKey];
+                    tvCctvDiscount = tvUnit.discount; 
+                    tvCctvDiscountLabel = "TV/CCTV 결합 할인";
+                } else if (isTvSelected) {
+                    const tvUnit = uplusData.tv[cat][tvKey];
+                    tvCctvDiscount = tvUnit.discount;
+                    tvCctvDiscountLabel = "TV 결합 할인";
+                } else if (cctvQty > 0) {
+                    if (!intKey.includes('100M')) {
+                        tvCctvDiscount = 5500;
+                        tvCctvDiscountLabel = "CCTV 결합 할인";
+                    }
+                }
+            } else { // business (소호)
+                if (!intKey.includes('100M')) {
+                    if (isTvSelected && cctvQty > 0) {
+                        // 중복 적용 없이 단일 5,500원 결합할인 적용
+                        tvCctvDiscount = 5500;
+                        tvCctvDiscountLabel = "TV/CCTV 결합 할인";
+                    } else if (isTvSelected) {
+                        tvCctvDiscount = 5500;
+                        tvCctvDiscountLabel = "TV 결합 할인";
+                    } else if (cctvQty > 0) {
+                        tvCctvDiscount = 5500;
+                        tvCctvDiscountLabel = "CCTV 결합 할인";
+                    }
+                }
+            }
+
+            if (tvCctvDiscount > 0) {
+                totalDiscount += tvCctvDiscount;
+                tbody.innerHTML += `<tr><td class="px-2 py-2 border-r border-slate-200 font-bold text-blue-600">${tvCctvDiscountLabel}<br><span class="text-[8px] font-normal text-blue-400">100M 제외 / 중복 적용 배제</span></td><td class="text-center border-r border-slate-200">-</td><td class="text-right px-2 font-bold text-blue-600">-${tvCctvDiscount.toLocaleString()}</td></tr>`;
+            }
+
+            // [인터넷 + TV + CCTV] 3종 상품 모두 결합 시의 추가 보너스 가산 할인 프로모션 
+            if (isTvSelected && cctvQty > 0) {
+                let tripleDiscount = 0;
+                let tripleLabel = "";
+                
+                if (intKey.includes('1G') || intKey === '1G' || intKey.includes('2.5G') || intKey === '2.5G') {
+                    tripleDiscount = 3300;
+                    tripleLabel = "인터넷+TV+CCTV 3종 결합 추가 프로모션 (1G)";
+                } else if (intKey.includes('500M') || intKey === '500M') {
+                    tripleDiscount = 1100;
+                    tripleLabel = "인터넷+TV+CCTV 3종 결합 추가 프로모션 (500M)";
+                }
+
+                if (tripleDiscount > 0) {
+                    totalDiscount += tripleDiscount;
+                    tbody.innerHTML += `<tr><td class="px-2 py-2 border-r border-slate-200 font-bold text-purple-600">3종 결합 추가 할인<br><span class="text-[8px] font-normal text-purple-400">${tripleLabel}</span></td><td class="text-center border-r border-slate-200">-</td><td class="text-right px-2 font-bold text-purple-600">-${tripleDiscount.toLocaleString()}</td></tr>`;
+                }
+            }
+
+            // ✅ 새로 추가된 모바일/가족 결합 할인 처리 (청구서 테이블 반영)
+            if (familyComboDiscount > 0) {
+                totalDiscount += familyComboDiscount;
+                let comboLabel = "";
+                if (familyComboKey === "together") comboLabel = "U+투게더 결합 할인";
+                else if (familyComboKey === "easy99") comboLabel = "참쉬운 가족결합 할인";
+                else if (familyComboKey === "easy132") comboLabel = "참쉬운 가족결합 할인";
+
+                tbody.innerHTML += `<tr><td class="px-2 py-2 border-r border-slate-200 font-bold text-blue-600">${comboLabel}<br><span class="text-[8px] font-normal text-blue-400">가족 무선/유선 결합 적용</span></td><td class="text-center border-r border-slate-200">-</td><td class="text-right px-2 font-bold text-blue-600">-${familyComboDiscount.toLocaleString()}</td></tr>`;
+            }
+
+            if (hasPhone) { 
+                runningTotal += uplusData.extra.ai_phone; 
+                tbody.innerHTML += `<tr><td class="px-2 py-2 border-r border-slate-200 font-bold">AI 전화</td><td class="text-center border-r border-slate-200">1</td><td class="text-right px-2 font-bold">${uplusData.extra.ai_phone.toLocaleString()}</td></tr>`; 
+            }
+
+            const finalTotal = runningTotal - totalDiscount;
+            
+            const supplyPrice = Math.round(finalTotal / 1.1);
+            const vat = finalTotal - supplyPrice;
+
+            document.getElementById('subtotal').innerText = supplyPrice.toLocaleString() + ' 원';
             document.getElementById('vatTotal').innerText = vat.toLocaleString() + ' 원';
-            document.getElementById('total').innerText = (finalSubtotal + vat).toLocaleString();
+            document.getElementById('total').innerText = finalTotal.toLocaleString();
 
             const vList = document.getElementById('voucherList');
             vList.innerHTML = '';
             let vTotal = 0;
-            const isCombined = isTvSelected || subTvKey !== 'none' || hasCctv || hasPhone;
 
-            if (isCombined) {
-                let baseV = (cat === 'home') ? (internetInfo.voucher[giftKey] || 0) : internetInfo.voucher;
+            // ✅ 가족 결합 할인도 결합 기본 혜택 판정 기준(isCombined)에 포함
+            const isCombined = isTvSelected || subTvKey !== 'none' || cctvQty > 0 || hasPhone || smartHomeKey !== 'none' || familyComboKey !== 'none';
+
+            let baseV = 0;
+            let baseVLabel = "기본 혜택";
+
+            if (cat === 'home') {
+                if (isCombined) {
+                    baseV = internetInfo.voucher || 0;
+                    baseVLabel = `가정용 결합 기본 혜택`;
+                } else {
+                    baseV = 150000;
+                    baseVLabel = "인터넷 단독 혜택";
+                }
                 vTotal += baseV;
-                vList.innerHTML += `<div class="flex justify-between"><span>결합 기본 혜택</span><span class="font-bold">${baseV.toLocaleString()} 원</span></div>`;
+                vList.innerHTML += `<div class="flex justify-between"><span>${baseVLabel}</span><span class="font-bold">${baseV.toLocaleString()} 원</span></div>`;
+                
+                if (smartHomeKey !== 'none') {
+                    vTotal += 70000;
+                    vList.innerHTML += `<div class="flex justify-between text-pink-600 font-bold"><span>스마트홈 결합 사은품 추가</span><span class="font-bold">+ 70,000 원</span></div>`;
+                }
+
                 if (subTvKey !== 'none') { 
                     vTotal += 30000; 
                     vList.innerHTML += `<div class="flex justify-between"><span>부셋탑 추가 혜택</span><span class="font-bold">30,000 원</span></div>`; 
                 }
             } else {
-                vTotal += 150000;
-                vList.innerHTML += `<div class="flex justify-between"><span>인터넷 단독 혜택</span><span class="font-bold">150,000 원</span></div>`;
+                baseV = internetInfo.voucher || 0;
+                baseVLabel = isCombined ? "소호 결합 기본 혜택" : "소호 인터넷 기본 혜택";
+                vTotal += baseV;
+                vList.innerHTML += `<div class="flex justify-between"><span>${baseVLabel} (${intKey})</span><span class="font-bold">${baseV.toLocaleString()} 원</span></div>`;
+
+                if (isTvSelected) {
+                    vTotal += 150000;
+                    vList.innerHTML += `<div class="flex justify-between text-pink-600 font-bold"><span>TV 결합 사은품 추가</span><span class="font-bold">+ 150,000 원</span></div>`;
+                }
+
+                if (cctvQty > 0) {
+                    const cctvVoucher = cctvQty * 40000;
+                    vTotal += cctvVoucher;
+                    vList.innerHTML += `<div class="flex justify-between text-blue-600 font-bold"><span>CCTV 결합 사은품 추가 (${cctvQty}대)</span><span class="font-bold">+ ${cctvVoucher.toLocaleString()} 원</span></div>`;
+                }
+
+                if (hasPhone) {
+                    vTotal += 50000;
+                    vList.innerHTML += `<div class="flex justify-between text-teal-600 font-bold"><span>AI 전화 결합 사은품 추가</span><span class="font-bold">+ 50,000 원</span></div>`;
+                }
+
+                if (subTvKey !== 'none') { 
+                    vTotal += 30000; 
+                    vList.innerHTML += `<div class="flex justify-between"><span>부셋탑 추가 혜택</span><span class="font-bold">30,000 원</span></div>`; 
+                }
             }
 
+            if (hasPolicyGeneral && !intKey.includes('100M')) {
+                vTotal += 50000;
+                vList.innerHTML += `<div class="flex justify-between text-slate-700"><span>일반결제안심무선 지원</span><span class="font-bold">+ 50,000 원</span></div>`;
+            }
+            if (hasPolicyAnsim && !intKey.includes('100M')) {
+                vTotal += 80000;
+                vList.innerHTML += `<div class="flex justify-between text-slate-700"><span>안심보상(신규요금제) 지원</span><span class="font-bold">+ 80,000 원</span></div>`;
+            }
             if (hasGoodStart && !intKey.includes('100M')) {
                 vTotal += 50000;
-                vList.innerHTML += `<div class="flex justify-between text-uplus font-bold"><span>Good Start 프로모션</span><span>+ 50,000 원</span></div>`;
+                vList.innerHTML += `<div class="flex justify-between text-uplus font-bold"><span>Good Start 프로모션</span><span class="font-bold">+ 50,000 원</span></div>`;
             }
             document.getElementById('voucherTotal').innerText = vTotal.toLocaleString();
         }
@@ -333,18 +688,6 @@
         async function captureAndSave(btn) {
             const area = document.getElementById('capture-area');
             const originalHTML = btn.innerHTML;
-            
-            // 이미지 캡쳐 전 상단 헤더 날짜 명시적 업데이트
-            const dateInput = document.getElementById('docDate');
-            const displayDateDiv = document.getElementById('displayDate');
-            displayDateDiv.innerText = dateInput.value.replace(/-/g, '.');
-
-            // 설정창 내 날짜 입력창(input)은 캡쳐 시 텍스트로 임시 변환 (html2canvas 호환성)
-            const dateSpan = document.createElement('span');
-            dateSpan.innerText = dateInput.value.replace(/-/g, '.');
-            dateSpan.className = "text-[10px] font-bold text-slate-800 bg-transparent inline-block"; // 설정창 배경색에 맞는 어두운 색 적용
-            dateInput.style.display = 'none';
-            dateInput.parentNode.insertBefore(dateSpan, dateInput);
             
             try {
                 btn.innerHTML = '처리 중...';
@@ -361,16 +704,22 @@
                 link.click();
             } finally { 
                 btn.innerHTML = originalHTML; 
-                dateInput.style.display = '';
-                dateSpan.remove();
             }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             initSelects();
-            document.getElementById('serviceCategory').addEventListener('change', () => { updateInternetList(); update(); });
-            document.getElementById('internet').addEventListener('change', () => { updateGiftOptions(); update(); });
+            document.getElementById('serviceCategory').addEventListener('change', () => { 
+                updateTvList(); 
+                updateInternetList(); 
+                update(); 
+            });
             document.querySelectorAll('select, input').forEach(el => el.addEventListener('change', update));
+            
+            // 초기 로드 시 'home' 기준으로 폼 강제 동기화
+            document.getElementById('serviceCategory').value = "home";
+            updateTvList();
+            updateInternetList();
             update();
         });
     </script>
