@@ -63,6 +63,37 @@
                     </select>
                 </div>
 
+                <!-- 인터넷 전화 선택형 섹션 (부셋탑 요금제 바로 밑에 배치 / 소호 인터넷 시에만 노출) -->
+                <div id="phoneSection" class="flex flex-col gap-1.5 border-t border-slate-200 pt-2 mt-1 hidden">
+                    <label class="block text-[9px] font-bold text-slate-400 uppercase tracking-tight">인터넷 전화 선택형 (3년 약정 기준)</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <select id="phonePlan" class="w-full bg-white border border-slate-200 rounded px-1.5 py-1 text-[11px] font-bold outline-none focus:ring-1 focus:ring-uplus">
+                                <option value="none" selected>전화 미선택</option>
+                                <option value="normal">일반형 요금제 (1,100원)</option>
+                                <option value="free3">자유통화3 요금제 (5,500원)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select id="phoneDevice" class="w-full bg-white border border-slate-200 rounded px-1.5 py-1 text-[11px] font-bold outline-none focus:ring-1 focus:ring-uplus">
+                                <option value="none" selected>단말기 미선택</option>
+                                <option value="ip520s">IP520S (1,220원)</option>
+                                <option value="cpg">CPG (1,100원)</option>
+                                <option value="ip450s">IP450S (610원)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- 인터넷 전화 부가서비스 상세 체크박스 (일반형 시에만 표출되도록 JS 제어) -->
+                    <div id="phoneVasContainer" class="flex gap-4 mt-1 pl-1 hidden">
+                        <label class="flex items-center gap-1.5 text-[9.5px] font-bold text-slate-600 cursor-pointer">
+                            <input type="checkbox" id="phoneVasCallerId" class="w-3.5 h-3.5 accent-uplus"> 발신번호표시 (+1,100원)
+                        </label>
+                        <label class="flex items-center gap-1.5 text-[9.5px] font-bold text-slate-600 cursor-pointer">
+                            <input type="checkbox" id="phoneVasForwarding" class="w-3.5 h-3.5 accent-uplus"> 착신전환 (+550원)
+                        </label>
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block text-[9px] font-bold text-slate-400 mb-0.5 uppercase">U+ 스마트홈</label>
@@ -87,7 +118,7 @@
                     </div>
                 </div>
 
-                <!-- ✅ 새로 추가된 모바일/가족 결합 할인 옵션 (스마트홈 하단 배치) -->
+                <!-- 모바일/가족 결합 할인 옵션 (스마트홈 하단 배치) -->
                 <div>
                     <label class="block text-[9px] font-bold text-slate-400 mb-0.5 uppercase">모바일/가족 결합 할인</label>
                     <select id="familyCombination" class="w-full bg-white border border-slate-200 rounded px-1.5 py-1 text-[11px] font-bold outline-none border-pink-200 focus:ring-1 focus:ring-uplus">
@@ -104,20 +135,16 @@
                         <span class="w-1 h-2 bg-uplus rounded-full inline-block"></span>
                         [영업 활성화 프로모션]
                     </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <label class="flex items-center gap-1.5 text-[9px] font-bold text-slate-700 cursor-pointer">
+                    <!-- AI 전화 제외 후 3개 프로모션을 격자 배치로 깔끔히 정렬 -->
+                    <div class="grid grid-cols-2 gap-x-2 gap-y-1.5 mt-0.5">
+                        <label class="flex items-center gap-1.5 text-[9.5px] font-bold text-slate-700 cursor-pointer">
                             <input type="checkbox" id="policyGeneral" class="w-3.5 h-3.5 accent-uplus"> 결제안심무선 (+5만)
                         </label>
-                        <label class="flex items-center gap-1.5 text-[9px] font-bold text-slate-700 cursor-pointer">
+                        <label class="flex items-center gap-1.5 text-[9.5px] font-bold text-slate-700 cursor-pointer">
                             <input type="checkbox" id="policyAnsim" class="w-3.5 h-3.5 accent-uplus"> 안심보상신규 (+8만)
                         </label>
-                    </div>
-                    <div class="flex items-center justify-between mt-1">
-                        <label class="flex items-center gap-1.5 text-[10px] font-bold text-uplus cursor-pointer">
+                        <label class="flex items-center gap-1.5 text-[9.5px] font-bold text-uplus cursor-pointer col-span-2">
                             <input type="checkbox" id="goodStart" class="w-3.5 h-3.5 accent-uplus"> Good Start (+5만)
-                        </label>
-                        <label class="flex items-center gap-1.5 text-[10px] font-bold text-slate-600 cursor-pointer">
-                            <input type="checkbox" id="addPhone" class="w-3.5 h-3.5 accent-uplus"> AI 전화
                         </label>
                     </div>
                 </div>
@@ -358,10 +385,10 @@
                 "kids": { price: 12100, discount: 2200 },
                 "doorcam": { price: 14300, discount: 2200 }
             },
-            extra: { cctv: 13200, ai_phone: 3300 }
+            extra: { cctv: 13200 }
         };
 
-        // ✅ 결합 할인 단가 정의 (부가세 포함 금액)
+        // 결합 할인 단가 정의 (부가세 포함 금액)
         const familyComboPrices = {
             "none": 0,
             "together": 11000,
@@ -440,7 +467,6 @@
             const tvKey = document.getElementById('tvPlan').value;
             const subTvKey = document.getElementById('subTvPlan').value;
             const smartHomeKey = document.getElementById('smartHome').value;
-            const hasPhone = document.getElementById('addPhone').checked;
             const hasGoodStart = document.getElementById('goodStart').checked;
             
             const hasPolicyGeneral = document.getElementById('policyGeneral').checked;
@@ -448,9 +474,15 @@
 
             const cctvQty = parseInt(document.getElementById('cctvQty').value) || 0;
             
-            // ✅ 결합 할인 선택값 가져오기
+            // 결합 할인 선택값 가져오기
             const familyComboKey = document.getElementById('familyCombination').value;
             const familyComboDiscount = familyComboPrices[familyComboKey] || 0;
+
+            // 인터넷 전화 정보 및 상태 체크 가져오기
+            const phonePlanVal = document.getElementById('phonePlan').value;
+            const phoneDeviceVal = document.getElementById('phoneDevice').value;
+            const phoneVasCallerId = document.getElementById('phoneVasCallerId').checked;
+            const phoneVasForwarding = document.getElementById('phoneVasForwarding').checked;
 
             document.getElementById('displayDate').innerText = getTodayDateString();
 
@@ -472,23 +504,46 @@
                 descEl.classList.add('hidden');
             }
 
-            // 가정용 인터넷 선택 시 영업 활성화 프로모션 영역 감추기 & 비즈니스 체크 초기화
+            // 가정용 인터넷 선택 시 영업 활성화 프로모션 및 인터넷 전화 영역 감추기 & 비즈니스 체크 초기화
             const promoSection = document.getElementById('promoSection');
+            const phoneSection = document.getElementById('phoneSection');
+            const phoneVasContainer = document.getElementById('phoneVasContainer');
+
             if (cat === 'home') {
                 promoSection.classList.add('hidden');
+                phoneSection.classList.add('hidden');
+                phoneVasContainer.classList.add('hidden');
+                
                 document.getElementById('policyGeneral').checked = false;
                 document.getElementById('policyAnsim').checked = false;
                 document.getElementById('goodStart').checked = false;
-                document.getElementById('addPhone').checked = false;
+
+                // 전화 선택 리셋
+                document.getElementById('phonePlan').value = 'none';
+                document.getElementById('phoneDevice').value = 'none';
+                document.getElementById('phoneVasCallerId').checked = false;
+                document.getElementById('phoneVasForwarding').checked = false;
             } else {
                 promoSection.classList.remove('hidden');
+                phoneSection.classList.remove('hidden');
+
+                // ✅ [수정 사항]: 일반형 요금제('normal') 일 때만 발신번호/착신전환 선택란이 나옵니다.
+                // 자유통화3('free3') 요금제 선택 시에는 부가서비스가 전액 무료 포함이므로 선택란을 숨기고 체크 상태를 리셋합니다.
+                if (phonePlanVal === 'normal') {
+                    phoneVasContainer.classList.remove('hidden');
+                } else {
+                    phoneVasContainer.classList.add('hidden');
+                    document.getElementById('phoneVasCallerId').checked = false;
+                    document.getElementById('phoneVasForwarding').checked = false;
+                }
             }
 
             const isTvSelected = tvKey !== 'none';
             let intPrice = internetInfo.single;
             let intDesc = "인터넷 단독 요금";
 
-            if (isTvSelected || subTvKey !== 'none' || cctvQty > 0) {
+            // 인터넷 전화가 활성화되어 있어도 유선 결합 할인 조건(isCombined)으로 인식하도록 통합
+            if (isTvSelected || subTvKey !== 'none' || cctvQty > 0 || (cat === 'business' && phonePlanVal !== 'none')) {
                 intPrice = internetInfo.combined || internetInfo.single;
                 intDesc = "결합 할인 자동 적용";
             }
@@ -533,7 +588,6 @@
 
             if (cat === 'home') {
                 if (isTvSelected && cctvQty > 0) {
-                    // 메인 TV와 CCTV를 둘 다 사용해도 결합할인은 중복 적용 없이 1회만 (TV 요금제 기준 할인 금액 적용)
                     const tvUnit = uplusData.tv[cat][tvKey];
                     tvCctvDiscount = tvUnit.discount; 
                     tvCctvDiscountLabel = "TV/CCTV 결합 할인";
@@ -550,7 +604,6 @@
             } else { // business (소호)
                 if (!intKey.includes('100M')) {
                     if (isTvSelected && cctvQty > 0) {
-                        // 중복 적용 없이 단일 5,500원 결합할인 적용
                         tvCctvDiscount = 5500;
                         tvCctvDiscountLabel = "TV/CCTV 결합 할인";
                     } else if (isTvSelected) {
@@ -587,7 +640,7 @@
                 }
             }
 
-            // ✅ 새로 추가된 모바일/가족 결합 할인 처리 (청구서 테이블 반영)
+            // 새로 추가된 모바일/가족 결합 할인 처리 (청구서 테이블 반영)
             if (familyComboDiscount > 0) {
                 totalDiscount += familyComboDiscount;
                 let comboLabel = "";
@@ -598,13 +651,54 @@
                 tbody.innerHTML += `<tr><td class="px-2 py-2 border-r border-slate-200 font-bold text-blue-600">${comboLabel}<br><span class="text-[8px] font-normal text-blue-400">가족 무선/유선 결합 적용</span></td><td class="text-center border-r border-slate-200">-</td><td class="text-right px-2 font-bold text-blue-600">-${familyComboDiscount.toLocaleString()}</td></tr>`;
             }
 
-            if (hasPhone) { 
-                runningTotal += uplusData.extra.ai_phone; 
-                tbody.innerHTML += `<tr><td class="px-2 py-2 border-r border-slate-200 font-bold">AI 전화</td><td class="text-center border-r border-slate-200">1</td><td class="text-right px-2 font-bold">${uplusData.extra.ai_phone.toLocaleString()}</td></tr>`; 
+            // [인터넷 전화 요금제 계산 및 테이블 반영] 일반형, 자유통화3 요금제와 기기(IP520S, CPG, IP450S) 및 부가서비스 요금 연동
+            if (cat === 'business' && phonePlanVal !== 'none') {
+                let phoneItemPrice = 0;
+                let phoneDesc = "";
+
+                if (phonePlanVal === 'normal') {
+                    phoneItemPrice += 1100; // 일반형 요금제 기본료 (VAT포함 1100원)
+                    phoneDesc += "일반형";
+
+                    // 일반형일 때만 부가서비스 가산 연동 (발신번호표시: 1100원, 착신전환: 550원)
+                    let phoneVasDescList = [];
+                    if (phoneVasCallerId) {
+                        phoneItemPrice += 1100;
+                        phoneVasDescList.push("발신번호표시");
+                    }
+                    if (phoneVasForwarding) {
+                        phoneItemPrice += 550;
+                        phoneVasDescList.push("착신전환");
+                    }
+                    if (phoneVasDescList.length > 0) {
+                        phoneDesc += " (" + phoneVasDescList.join(" + ") + ")";
+                    }
+                } else if (phonePlanVal === 'free3') {
+                    phoneItemPrice += 5500; // 자유통화3 요금제 기본료 (VAT포함 5500원)
+                    phoneDesc += "자유통화3 (발신번호표시+착신전환 무료 제공)";
+                }
+
+                // 단말기 사양 요금 가산 연동 (IP520S: 1220원, CPG: 1100원, IP450S: 610원)
+                let deviceLabelText = "";
+                if (phoneDeviceVal === 'ip520s') {
+                    phoneItemPrice += 1220;
+                    deviceLabelText = " / IP520S";
+                } else if (phoneDeviceVal === 'cpg') {
+                    phoneItemPrice += 1100;
+                    deviceLabelText = " / CPG";
+                } else if (phoneDeviceVal === 'ip450s') {
+                    phoneItemPrice += 610;
+                    deviceLabelText = " / IP450S";
+                }
+                phoneDesc += deviceLabelText;
+
+                runningTotal += phoneItemPrice;
+                tbody.innerHTML += `<tr><td class="px-2 py-2 border-r border-slate-200 font-bold">인터넷 전화 (3년 약정)<br><span class="text-[8px] font-normal text-slate-500">${phoneDesc}</span></td><td class="text-center border-r border-slate-200">1</td><td class="text-right px-2 font-bold">${phoneItemPrice.toLocaleString()}</td></tr>`;
             }
 
-            const finalTotal = runningTotal - totalDiscount;
-            
+            // ReferenceError 원인이었던 초기화 전 finalTotal 조회를 임시 변수 구조로 완벽하게 수정
+            const calculatedTotal = runningTotal - totalDiscount;
+            const finalTotal = calculatedTotal < 0 ? 0 : calculatedTotal;
             const supplyPrice = Math.round(finalTotal / 1.1);
             const vat = finalTotal - supplyPrice;
 
@@ -616,8 +710,7 @@
             vList.innerHTML = '';
             let vTotal = 0;
 
-            // ✅ 가족 결합 할인도 결합 기본 혜택 판정 기준(isCombined)에 포함
-            const isCombined = isTvSelected || subTvKey !== 'none' || cctvQty > 0 || hasPhone || smartHomeKey !== 'none' || familyComboKey !== 'none';
+            const isCombined = isTvSelected || subTvKey !== 'none' || cctvQty > 0 || smartHomeKey !== 'none' || familyComboKey !== 'none' || (cat === 'business' && phonePlanVal !== 'none');
 
             let baseV = 0;
             let baseVLabel = "기본 혜택";
@@ -659,9 +752,10 @@
                     vList.innerHTML += `<div class="flex justify-between text-blue-600 font-bold"><span>CCTV 결합 사은품 추가 (${cctvQty}대)</span><span class="font-bold">+ ${cctvVoucher.toLocaleString()} 원</span></div>`;
                 }
 
-                if (hasPhone) {
+                // 이전 AI 전화 사은품을 '인터넷 전화 결합 사은품'으로 명칭을 전환하여 소호에서 전화 선택 시 5만 원 추가 사은품 연동
+                if (phonePlanVal !== 'none') {
                     vTotal += 50000;
-                    vList.innerHTML += `<div class="flex justify-between text-teal-600 font-bold"><span>AI 전화 결합 사은품 추가</span><span class="font-bold">+ 50,000 원</span></div>`;
+                    vList.innerHTML += `<div class="flex justify-between text-teal-600 font-bold"><span>인터넷 전화 결합 사은품 추가</span><span class="font-bold">+ 50,000 원</span></div>`;
                 }
 
                 if (subTvKey !== 'none') { 
